@@ -1,19 +1,13 @@
-import { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Stack, useRouter } from "expo-router";
+import { View, Text } from "react-native";
+import React from "react";
+import { generateMonthDate } from "../../utils/calendarDates";
 
 export default function HomePage() {
   return (
-    <View style={styles.container}>
-      <Text>hello, world!</Text>
+    <View>
+      <Text className="align-middle justify-center text-pink-500 content-center">
+        ILABYUUUUUUUUUU
+      </Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  }
-});
