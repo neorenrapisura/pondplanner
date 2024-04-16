@@ -1,13 +1,20 @@
-import { View, Text } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { generateMonthDate } from "../../utils/calendarDates";
 
-export default function HomePage() {
+const HomePage = () => {
   return (
-    <View>
-      <Text className="align-middle justify-center text-pink-500 content-center">
-        ILABYUUUUUUUUUU
+    <SafeAreaView>
+      <Text style={{ marginLeft: 30, marginTop: 30, fontSize: 25 }}>
+        Welcome Back,{"\n"}Neoren
       </Text>
-    </View>
+    </SafeAreaView>
   );
-}
+};
+
+export default HomePage;
+
+const styles = StyleSheet.create({
+  welcomeText: {
+    marginLeft: 5
+  }
+});
