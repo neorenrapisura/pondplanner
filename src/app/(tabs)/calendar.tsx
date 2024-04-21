@@ -1,61 +1,41 @@
 import { Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import React, { useCallback, useRef, useState } from "react";
-import "react-native-gesture-handler";
-import BottomSheet, {
-  BottomSheetView,
-  TouchableOpacity
-} from "@gorhom/bottom-sheet";
-import type {
-  BottomSheetModal,
-  BottomSheetModalProvider
-} from "@gorhom/bottom-sheet";
 
 import Header from "../../components/Header";
 
 import dayjs from "dayjs";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const calendar = () => {
   const [month, setMonth] = useState(dayjs().month());
+  const [date, setDate] = useState(dayjs().date());
   const [year, setYear] = useState(dayjs().year());
 
-  function handleJumpToday(): void {
-    setMonth(dayjs().month());
-    setYear(dayjs().year());
-  }
+  const setCalendarDate = (month: number, date: number, year: number): void => {
+    setMonth(month);
+    setDate(date);
+    setYear(year);
+  };
 
-  function handleJumpToMonth(_month: number, _year: number): void {
-    setMonth(_month);
-    setYear(_year);
-  }
+  const handleJumpToday = (): void => {
+    setCalendarDate(dayjs().month(), dayjs().date(), dayjs().year());
+  };
 
-  const bottomSheetModalRef = useRef<BottomSheet>(null);
-
-  // ref
-  const bottomSheetRef = useRef<BottomSheet>(null);
-
-  // callbacks
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
-  }, []);
+  const handleJumpToDate = (date: Date): void => {
+    setCalendarDate(
+      dayjs(date).month(),
+      dayjs(date).date(),
+      dayjs(date).year()
+    );
+  };
 
   return (
     <SafeAreaView>
-      <TouchableOpacity>
-        <Text>holay molay</Text>
-      </TouchableOpacity>
-      <BottomSheet ref={bottomSheetRef} index={0} snapPoints={["48%"]}>
-        <BottomSheetView style={styles.contentContainer}>
-          <Text>Awesome 🎉</Text>
-        </BottomSheetView>
-      </BottomSheet>
-
-      {/* <Header
+      <Header
         month={dayjs().month(month).format("MMMM")}
         year={year.toString()}
         onJumpToday={handleJumpToday}
-        onJumpToMonth={handleJumpToMonth}
-      /> */}
+        onJumpToDate={handleJumpToDate}
+      />
     </SafeAreaView>
   );
 };

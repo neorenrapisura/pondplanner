@@ -8,25 +8,17 @@ import {
   View
 } from "react-native";
 import React, { useState } from "react";
-import DateTimePicker, {
-  type DateTimePickerEvent
-} from "@react-native-community/datetimepicker";
-import {
-  BottomSheetModal,
-  BottomSheetView,
-  BottomSheetModalProvider
-} from "@gorhom/bottom-sheet";
-
-import MonthDisplay from "./calendar/header/MonthDisplay";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 import { MaterialIcons } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
+import dayjs from "dayjs";
 
 interface Props {
   month: string;
   year: string;
   onJumpToday: () => void;
-  onJumpToMonth: (month: number, year: number) => void;
+  onJumpToDate: (date: Date) => void;
 
   // banks: string[];
   // selectedBanks: string[];
@@ -39,25 +31,22 @@ const Header = (props: Props) => {
   const [dateDropdownIcon, setDateDropdownIcon] = useState<
     "triangle-down" | "triangle-up"
   >("triangle-down");
-  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-  function togglePressedDate(): void {
-    setDateDropdownIcon(
-      dateDropdownIcon === "triangle-up" ? "triangle-down" : "triangle-up"
-    );
-    setShowDatePicker(!showDatePicker);
-  }
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+    setDateDropdownIcon("triangle-up");
+  };
 
-  function handleDateChange(
-    event: DateTimePickerEvent,
-    selectedDate?: Date
-  ): void {
-    if (event.type === "set") {
-      // ...
-    } else {
-      togglePressedDate();
-    }
-  }
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+    setDateDropdownIcon("triangle-down");
+  };
+
+  const handleConfirm = (date: Date) => {
+    props.onJumpToDate(date);
+    hideDatePicker();
+  };
 
   return (
     <View needsOffscreenAlphaCompositing={true}>
@@ -71,30 +60,30 @@ const Header = (props: Props) => {
           borderBottomWidth: 0.5
         }}
       >
-        <TouchableOpacity style={{ marginRight: 12 }}>
+        <TouchableOpacity
+          style={{ marginRight: 12 }}
+          onPress={props.onJumpToday}
+        >
           <MaterialIcons name="today" size={32} color="black" />
         </TouchableOpacity>
 
         <TouchableOpacity
           style={{ flexDirection: "row", alignItems: "center" }}
-          onPress={togglePressedDate}
+          onPress={showDatePicker}
         >
           <Text style={{ fontSize: 22, marginRight: 10 }}>
             {props.month} {props.year}
           </Text>
           <Octicons name={dateDropdownIcon} size={24} color="black" />
         </TouchableOpacity>
-        {showDatePicker && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={new Date()}
-            mode={"date"}
-            display={"default"}
-            onChange={handleDateChange}
-            is24Hour={true}
-          />
-        )}
       </View>
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+        themeVariant={"light"}
+      />
     </View>
   );
 };
