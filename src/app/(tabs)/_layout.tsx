@@ -33,6 +33,7 @@ const TabsLayout = () => {
         name="calendar"
         options={{
           title: "Calendar",
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <Feather name="calendar" size={24} color={color} />
           )

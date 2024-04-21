@@ -15,8 +15,7 @@ const CalendarDay = ({ date }: Props) => {
         maxWidth: `${100 / 7}%`, // 100% devided by the number of rows you want
         alignItems: "center",
         justifyContent: "center",
-        height: RFValue(40),
-        borderStyle: "solid"
+        height: RFValue(40)
       }}
     >
       <Text>{date}</Text>

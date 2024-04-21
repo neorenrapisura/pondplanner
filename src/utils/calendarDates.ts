@@ -5,5 +5,6 @@ export function getMonth(
 	month = dayjs().month(),
 ): string {
 	const firstDayOfMonth = dayjs(new Date(year, month, 1)).day();
-	return firstDayOfMonth.toString();
+
+  const daysMatrix = []
 }
