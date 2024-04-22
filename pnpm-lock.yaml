@@ -23,6 +23,9 @@ dependencies:
   expo:
     specifier: ~50.0.14
     version: 50.0.15(@babel/core@7.24.4)(@react-native/babel-preset@0.73.21)
+  expo-checkbox:
+    specifier: ~2.7.0
+    version: 2.7.0
   expo-constants:
     specifier: ~15.4.5
     version: 15.4.5(expo@50.0.15)
@@ -4020,6 +4023,10 @@ packages:
     transitivePeerDependencies:
       - expo
       - supports-color
+    dev: false
+
+  /expo-checkbox@2.7.0:
+    resolution: {integrity: sha512-1wYgoOZ9pBg64PPPULbdD7jEVFX354dpJdUZRmkrO/7ybI668qO4r4+9777CUQ+2JoZEEJBBQzN6UiAl0Uodkg==}
     dev: false
 
   /expo-constants@15.4.5(expo@50.0.15):

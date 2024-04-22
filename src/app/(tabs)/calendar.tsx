@@ -31,10 +31,15 @@ const calendar = () => {
   return (
     <SafeAreaView>
       <Header
-        month={dayjs().month(month).format("MMMM")}
-        year={year.toString()}
+        month={month}
+        date={date}
+        year={year}
         onJumpToday={handleJumpToday}
         onJumpToDate={handleJumpToDate}
+        vaults={["Chase", "TD Bank", "Savings"]}
+        selectedVaults={["Chase"]}
+        onToggleVault={() => null}
+        total={2717.59}
       />
     </SafeAreaView>
   );

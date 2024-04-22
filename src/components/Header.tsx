@@ -2,6 +2,7 @@ import {
   Modal,
   Platform,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -9,22 +10,25 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import dayjs from "dayjs";
 
 import { MaterialIcons } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
-import dayjs from "dayjs";
+import { Ionicons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 
 interface Props {
-  month: string;
-  year: string;
+  month: number;
+  date: number;
+  year: number;
   onJumpToday: () => void;
   onJumpToDate: (date: Date) => void;
 
-  // banks: string[];
-  // selectedBanks: string[];
-  // onToggleBank: (bank: string) => void;
+  vaults: string[];
+  selectedVaults: string[];
+  onToggleVault: (bank: string) => void;
 
-  // total: number;
+  total: number;
 }
 
 const Header = (props: Props) => {
@@ -61,33 +65,92 @@ const Header = (props: Props) => {
         }}
       >
         <TouchableOpacity
-          style={{ marginRight: 12 }}
+          style={{ marginRight: 10 }}
           onPress={props.onJumpToday}
         >
-          <MaterialIcons name="today" size={32} color="black" />
+          <Ionicons name="today" size={30} color="black" />
         </TouchableOpacity>
+
+        {/* Month and year display */}
+
+        <TouchableOpacity
+          style={{ flexDirection: "row", alignItems: "center", flex: 1 }}
+          onPress={showDatePicker}
+        >
+          <Text style={{ fontSize: 20, marginRight: 10 }}>
+            {dayjs().month(props.month).format("MMM")} {props.year.toString()}
+          </Text>
+        </TouchableOpacity>
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="date"
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
+          themeVariant={"light"}
+          date={dayjs()
+            .month(props.month)
+            .date(props.date)
+            .year(props.year)
+            .toDate()}
+        />
 
         <TouchableOpacity
           style={{ flexDirection: "row", alignItems: "center" }}
-          onPress={showDatePicker}
         >
-          <Text style={{ fontSize: 22, marginRight: 10 }}>
-            {props.month} {props.year}
+          <Text style={{ fontSize: 17, color: "#29a329", marginRight: 10 }}>
+            ${props.total}
           </Text>
           <Octicons name={dateDropdownIcon} size={24} color="black" />
         </TouchableOpacity>
       </View>
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="date"
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
-        themeVariant={"light"}
-      />
+
+      <ScrollView
+        style={{
+          paddingHorizontal: 20,
+          paddingVertical: 10,
+          borderBottomWidth: 0.5
+        }}
+        contentContainerStyle={{
+          alignItems: "center",
+          marginTop: 3,
+          paddingBottom: 3
+        }}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+      >
+        {props.vaults.map((item, index) => (
+          <>
+            <TouchableOpacity
+              style={
+                (index === 0 && { ...styles.vaultButton, marginLeft: 0 }) ||
+                styles.vaultButton
+              }
+              key={item}
+            >
+              <Text style={{ fontSize: 13 }}>{item}</Text>
+            </TouchableOpacity>
+            {index === props.vaults.length - 1 && (
+              <TouchableOpacity style={styles.vaultButton} key="_newbutton">
+                <AntDesign name="plus" size={21} color="black" />
+              </TouchableOpacity>
+            )}
+          </>
+        ))}
+      </ScrollView>
     </View>
   );
 };
 
 export default Header;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  vaultButton: {
+    paddingHorizontal: 10,
+    height: 35,
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 5,
+    borderWidth: 1,
+    borderRadius: 6
+  }
+});
