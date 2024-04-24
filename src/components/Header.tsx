@@ -1,18 +1,14 @@
 import {
-  Modal,
-  Platform,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View
 } from "react-native";
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import dayjs from "dayjs";
 
-import { MaterialIcons } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
@@ -26,7 +22,8 @@ interface Props {
 
   vaults: string[];
   selectedVaults: string[];
-  onToggleVault: (bank: string) => void;
+  onToggleVault: (name: string) => void;
+  onAddVault: (name: string) => void;
 
   total: number;
 }
@@ -54,16 +51,18 @@ const Header = (props: Props) => {
 
   return (
     <View needsOffscreenAlphaCompositing={true}>
+      {/* date and total balance display */}
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
           marginTop: 10,
-          paddingHorizontal: 20,
-          paddingBottom: 10,
-          borderBottomWidth: 0.5
+          paddingHorizontal: 20
+          // paddingBottom: 3
+          // borderBottomWidth: 0.5
         }}
       >
+        {/* today button */}
         <TouchableOpacity
           style={{ marginRight: 10 }}
           onPress={props.onJumpToday}
@@ -72,15 +71,29 @@ const Header = (props: Props) => {
         </TouchableOpacity>
 
         {/* Month and year display */}
+        <View style={{ flex: 1 }}>
+          <View style={{ alignSelf: "flex-start" }}>
+            <TouchableOpacity
+              style={{
+                flexDirection: "row",
+                alignItems: "center"
+              }}
+              onPress={showDatePicker}
+            >
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginRight: 10,
+                  alignSelf: "flex-start"
+                }}
+              >
+                {dayjs().month(props.month).format("MMMM ")}
+                {props.year.toString()}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
 
-        <TouchableOpacity
-          style={{ flexDirection: "row", alignItems: "center", flex: 1 }}
-          onPress={showDatePicker}
-        >
-          <Text style={{ fontSize: 20, marginRight: 10 }}>
-            {dayjs().month(props.month).format("MMM")} {props.year.toString()}
-          </Text>
-        </TouchableOpacity>
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
           mode="date"
@@ -94,10 +107,11 @@ const Header = (props: Props) => {
             .toDate()}
         />
 
+        {/* total balance */}
         <TouchableOpacity
           style={{ flexDirection: "row", alignItems: "center" }}
         >
-          <Text style={{ fontSize: 17, color: "#29a329", marginRight: 10 }}>
+          <Text style={{ fontSize: 16, color: "#29a329", marginRight: 10 }}>
             ${props.total}
           </Text>
           <Octicons name={dateDropdownIcon} size={24} color="black" />
@@ -113,28 +127,41 @@ const Header = (props: Props) => {
         contentContainerStyle={{
           alignItems: "center",
           marginTop: 3,
-          paddingBottom: 3
+          paddingBottom: 3,
+          paddingRight: 30
         }}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
       >
         {props.vaults.map((item, index) => (
-          <>
+          <Fragment key={item}>
             <TouchableOpacity
               style={
                 (index === 0 && { ...styles.vaultButton, marginLeft: 0 }) ||
                 styles.vaultButton
               }
-              key={item}
+              onPress={() => {
+                props.onToggleVault(item);
+              }}
+              onLongPress={() => {
+                console.log("!!");
+              }}
             >
               <Text style={{ fontSize: 13 }}>{item}</Text>
             </TouchableOpacity>
+            {/* add new vault button */}
             {index === props.vaults.length - 1 && (
-              <TouchableOpacity style={styles.vaultButton} key="_newbutton">
-                <AntDesign name="plus" size={21} color="black" />
+              // TODO: add vault name prompt
+              <TouchableOpacity
+                style={styles.vaultButton}
+                onPress={() => {
+                  props.onAddVault("TODO!");
+                }}
+              >
+                <AntDesign name="plus" size={19} color="black" />
               </TouchableOpacity>
             )}
-          </>
+          </Fragment>
         ))}
       </ScrollView>
     </View>
