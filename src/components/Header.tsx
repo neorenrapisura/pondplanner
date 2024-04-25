@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import { Octicons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import FloatingPlusButton from "./FloatingAddButton";
 
 interface Props {
   month: number;
@@ -56,9 +57,9 @@ const Header = (props: Props) => {
         style={{
           flexDirection: "row",
           alignItems: "center",
-          marginTop: 10,
-          paddingHorizontal: 20
-          // paddingBottom: 3
+          marginTop: 18,
+          paddingHorizontal: 20,
+          paddingBottom: 5
           // borderBottomWidth: 0.5
         }}
       >
@@ -67,7 +68,7 @@ const Header = (props: Props) => {
           style={{ marginRight: 10 }}
           onPress={props.onJumpToday}
         >
-          <Ionicons name="today" size={30} color="black" />
+          <Ionicons name="today" size={30} color="#FF5741" />
         </TouchableOpacity>
 
         {/* Month and year display */}
@@ -82,12 +83,14 @@ const Header = (props: Props) => {
             >
               <Text
                 style={{
-                  fontSize: 20,
+                  fontSize: 26,
                   marginRight: 10,
-                  alignSelf: "flex-start"
+                  alignSelf: "flex-start",
+                  // fontFamily: "Helvetica Neue"
+                  fontWeight: "bold"
                 }}
               >
-                {dayjs().month(props.month).format("MMMM ")}
+                {dayjs().month(props.month).format("MMM ")}
                 {props.year.toString()}
               </Text>
             </TouchableOpacity>
@@ -111,8 +114,8 @@ const Header = (props: Props) => {
         <TouchableOpacity
           style={{ flexDirection: "row", alignItems: "center" }}
         >
-          <Text style={{ fontSize: 16, color: "#29a329", marginRight: 10 }}>
-            ${props.total}
+          <Text style={{ fontSize: 16, color: "#7BBD00", marginRight: 10 }}>
+            ${props.total.toLocaleString()}
           </Text>
           <Octicons name={dateDropdownIcon} size={24} color="black" />
         </TouchableOpacity>
@@ -172,11 +175,11 @@ export default Header;
 
 const styles = StyleSheet.create({
   vaultButton: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     height: 35,
     alignItems: "center",
     justifyContent: "center",
-    marginHorizontal: 5,
+    marginHorizontal: 7,
     borderWidth: 1,
     borderRadius: 6
   }

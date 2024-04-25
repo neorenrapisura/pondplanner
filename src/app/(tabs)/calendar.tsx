@@ -1,9 +1,9 @@
 import { Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import React, { useCallback, useRef, useState } from "react";
+import dayjs from "dayjs";
 
 import Header from "../../components/Header";
-
-import dayjs from "dayjs";
+import FloatingAddButton from "../../components/FloatingAddButton";
 
 const calendar = () => {
   const [month, setMonth] = useState(dayjs().month());
@@ -40,7 +40,7 @@ const calendar = () => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <Header
         month={month}
         date={date}
@@ -53,6 +53,7 @@ const calendar = () => {
         onAddVault={handleNewVault}
         total={159200.59}
       />
+      <FloatingAddButton onPressAdd={() => null} />
     </SafeAreaView>
   );
 };

@@ -1,22 +1,21 @@
 import React from "react";
 import { Tabs } from "expo-router";
-import { Foundation } from "@expo/vector-icons";
+import { RFValue } from "react-native-responsive-fontsize";
 
 import { Entypo } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import { RFValue } from "react-native-responsive-fontsize";
+import Colors from "../../constants/colors";
 
 const TabsLayout = () => {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "blue",
-        tabBarLabelStyle: { fontSize: RFValue(10) }
+        tabBarActiveTintColor: Colors.defaultGreen,
+        tabBarInactiveTintColor: Colors.gray,
+        tabBarLabelStyle: { fontSize: RFValue(10) },
+        tabBarStyle: { borderTopWidth: 0, paddingTop: 5 }
       }}
     >
       <Tabs.Screen
@@ -45,15 +44,6 @@ const TabsLayout = () => {
           title: "Analytics",
           tabBarIcon: ({ color }) => (
             <Ionicons name="stats-chart" size={21} color={color} />
-          )
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: "Settings",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="settings-outline" size={23} color={color} />
           )
         }}
       />
