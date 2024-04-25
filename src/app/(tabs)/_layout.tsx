@@ -1,12 +1,13 @@
 import React from "react";
 import { Tabs } from "expo-router";
 import { RFValue } from "react-native-responsive-fontsize";
+import * as Haptics from "expo-haptics";
 
 import { Entypo } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 
-import Colors from "../../constants/colors";
+import Colors from "../../constants/Colors";
 
 const TabsLayout = () => {
   return (
@@ -16,6 +17,9 @@ const TabsLayout = () => {
         tabBarInactiveTintColor: Colors.gray,
         tabBarLabelStyle: { fontSize: RFValue(10) },
         tabBarStyle: { borderTopWidth: 0, paddingTop: 5 }
+      }}
+      screenListeners={{
+        tabPress: () => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
       }}
     >
       <Tabs.Screen

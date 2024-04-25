@@ -8,11 +8,13 @@ import {
 import React, { Fragment, useState } from "react";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import dayjs from "dayjs";
-
 import { Octicons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import FloatingPlusButton from "./FloatingAddButton";
+import { Entypo } from "@expo/vector-icons";
+
+import type Vault from "../types/Vault";
+import VaultTabButton from "./VaultTabButton";
+import { styles as VaultTabButtonStyles } from "../components/VaultTabButton";
 
 interface Props {
   month: number;
@@ -21,10 +23,10 @@ interface Props {
   onJumpToday: () => void;
   onJumpToDate: (date: Date) => void;
 
-  vaults: string[];
+  vaults: Vault[];
   selectedVaults: string[];
   onToggleVault: (name: string) => void;
-  onAddVault: (name: string) => void;
+  onAddVault: (name: string, color: string) => void;
 
   total: number;
 }
@@ -114,7 +116,7 @@ const Header = (props: Props) => {
         <TouchableOpacity
           style={{ flexDirection: "row", alignItems: "center" }}
         >
-          <Text style={{ fontSize: 16, color: "#7BBD00", marginRight: 10 }}>
+          <Text style={{ fontSize: 17, color: "#7BBD00", marginRight: 10 }}>
             ${props.total.toLocaleString()}
           </Text>
           <Octicons name={dateDropdownIcon} size={24} color="black" />
@@ -136,32 +138,25 @@ const Header = (props: Props) => {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
       >
-        {props.vaults.map((item, index) => (
-          <Fragment key={item}>
-            <TouchableOpacity
-              style={
-                (index === 0 && { ...styles.vaultButton, marginLeft: 0 }) ||
-                styles.vaultButton
-              }
-              onPress={() => {
-                props.onToggleVault(item);
+        {props.vaults.map((vault, index) => (
+          <Fragment key={vault.name}>
+            <VaultTabButton
+              index={index}
+              name={vault.name}
+              color={vault.color}
+              selected={props.selectedVaults.includes(vault.name)}
+              onPressed={() => {
+                props.onToggleVault(vault.name);
               }}
-              onLongPress={() => {
-                console.log("!!");
-              }}
-            >
-              <Text style={{ fontSize: 13 }}>{item}</Text>
-            </TouchableOpacity>
-            {/* add new vault button */}
+            />
             {index === props.vaults.length - 1 && (
-              // TODO: add vault name prompt
               <TouchableOpacity
-                style={styles.vaultButton}
-                onPress={() => {
-                  props.onAddVault("TODO!");
+                style={{
+                  ...VaultTabButtonStyles.button,
+                  backgroundColor: "black"
                 }}
               >
-                <AntDesign name="plus" size={19} color="black" />
+                <Entypo name="plus" size={20} color="white" />
               </TouchableOpacity>
             )}
           </Fragment>
@@ -180,7 +175,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginHorizontal: 7,
-    borderWidth: 1,
-    borderRadius: 6
+    // borderWidth: 1,
+    borderRadius: 7
   }
 });

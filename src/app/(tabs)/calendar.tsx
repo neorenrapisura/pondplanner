@@ -2,8 +2,13 @@ import { Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import React, { useCallback, useRef, useState } from "react";
 import dayjs from "dayjs";
 
+import weekday from "dayjs/plugin/weekday";
+dayjs.extend(weekday);
+
 import Header from "../../components/Header";
 import FloatingAddButton from "../../components/FloatingAddButton";
+
+import type Vault from "../../types/Vault";
 
 const calendar = () => {
   const [month, setMonth] = useState(dayjs().month());
@@ -14,9 +19,11 @@ const calendar = () => {
     setDate(date);
     setYear(year);
   };
+
   const handleJumpToday = (): void => {
     setCalendarDate(dayjs().month(), dayjs().date(), dayjs().year());
   };
+
   const handleJumpToDate = (date: Date): void => {
     setCalendarDate(
       dayjs(date).month(),
@@ -25,17 +32,29 @@ const calendar = () => {
     );
   };
 
-  const [vaults, setVaults] = useState<string[]>(["Chase", "TD", "Savings"]);
+  const [vaults, setVaults] = useState<Vault[]>([
+    { name: "Checking", color: "#00C8FF" },
+    { name: "Savings", color: "#FFC55C" },
+    { name: "Test", color: "#FF3DA8" }
+  ]);
   const [selectedVaults, setSelectedVaults] = useState<string[]>([]);
+
   const handleToggleVault = (name: string) => {
-    const newList = [...selectedVaults];
-    newList.push(name);
-    setSelectedVaults(newList);
-    console.log(name);
+    const arr = [...selectedVaults];
+
+    if (arr.includes(name)) {
+      const index = arr.indexOf(name);
+      if (index === -1) return;
+      arr.splice(index, 1);
+    } else {
+      arr.push(name);
+    }
+    setSelectedVaults(arr);
   };
-  const handleNewVault = (name: string) => {
+
+  const handleNewVault = (name: string, color: string) => {
     const newList = [...vaults];
-    newList.push(name);
+    newList.push({ name: name, color: color });
     setVaults(newList);
   };
 
@@ -53,6 +72,20 @@ const calendar = () => {
         onAddVault={handleNewVault}
         total={159200.59}
       />
+
+      {/* <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignContent: "center",
+          paddingHorizontal: 20
+        }}
+      >
+        {[...Array(7)].map((_, i) => (
+          <Text>{dayjs().weekday(i).format("ddd")}</Text>
+        ))}
+      </View> */}
+
       <FloatingAddButton onPressAdd={() => null} />
     </SafeAreaView>
   );
@@ -60,14 +93,4 @@ const calendar = () => {
 
 export default calendar;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: "grey"
-  },
-  contentContainer: {
-    flex: 1,
-    alignItems: "center"
-  }
-});
+const styles = StyleSheet.create({});

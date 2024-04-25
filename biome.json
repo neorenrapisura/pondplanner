@@ -5,6 +5,7 @@
 			"suspicious": {
 				"noConsoleLog": "warn"
 			}
-		}
+		},
+		"ignore": ["node_modules"]
 	}
 }
